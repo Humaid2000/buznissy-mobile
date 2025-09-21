@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 12.4.0"
+    "version": ">= 12.4.0",
+    "appVersionSource": "local"
   },
   "build": {
     "preview": {
@@ -10,6 +11,10 @@
       "android": {
         "buildType": "apk"
       }
+    },
+    "production": {
+      "ios": {},
+      "android": {}
     }
   },
   "submit": {
