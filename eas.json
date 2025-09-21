@@ -5,8 +5,7 @@
   "build": {
     "preview": {
       "ios": {
-        "simulator": true,
-        "bundleIdentifier": "com.buznissy.mobile"
+        "simulator": true
       },
       "android": {
         "buildType": "apk"
