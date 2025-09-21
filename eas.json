@@ -1,32 +1,23 @@
 {
-  "expo": {
-    "name": "Buznissy",
-    "slug": "buznissy",
-    "version": "1.0.0",
-    "owner": "buznissy",
-    "extra": {
-      "eas": {
-        "projectId": "ac23156a-e947-4d03-b92f-353d75d8de58"
+  "cli": {
+    "version": ">= 12.4.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "preview": {
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
       }
     },
-    "orientation": "portrait",
-    "userInterfaceStyle": "light",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.buznissy.mobile",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
-    },
-    "android": {
-      "package": "com.buznissy.mobile"
-    },
-    "scheme": "buznissy",
-    "plugins": [
-      "expo-router"
-    ]
+    "production": {
+      "ios": {},
+      "android": {}
+    }
+  },
+  "submit": {
+    "production": {}
   }
 }
