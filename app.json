@@ -13,13 +13,13 @@
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.buznissy.mobile",
+      "bundleIdentifier": "com.buznissy.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
-      "package": "com.buznissy.mobile"
+      "package": "com.buznissy.app"
     },
     "scheme": "buznissy",
     "plugins": [
