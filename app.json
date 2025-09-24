@@ -1,29 +1,80 @@
 {
   "expo": {
     "name": "Buznissy",
-    "slug": "buznissy", 
-    "version": "1.0.0",
+    "slug": "buznissy",
+    "version": "1.0.1",
     "owner": "buznissy",
+    "description": "Buznissy - Your Business Management Solution",
+    "keywords": ["business", "management", "mobile", "app"],
+    "platforms": ["ios", "android"],
+    "githubUrl": "https://github.com/buznissy/mobile",
     "extra": {
       "eas": {
         "projectId": "ac23156a-e947-4d03-b92f-353d75d8de58"
       }
     },
     "orientation": "portrait",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#3b82f6"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.buznissy.app",
+      "bundleIdentifier": "com.buznissy.mobile",
+      "buildNumber": "1.0.1",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "This app uses camera to capture business documents and photos.",
+        "NSPhotoLibraryUsageDescription": "This app needs access to photo library to select business images."
       }
     },
     "android": {
-      "package": "com.buznissy.app"
+      "package": "com.buznissy.mobile",
+      "versionCode": 1,
+      "compileSdkVersion": 34,
+      "targetSdkVersion": 34,
+      "minSdkVersion": 23,
+      "icon": "./assets/adaptive-icon.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#3b82f6"
+      },
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "VIBRATE",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "allowBackup": false
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/favicon.png"
     },
     "scheme": "buznissy",
     "plugins": [
-      "expo-router"
-    ]
+      "expo-router",
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#3b82f6",
+          "defaultChannel": "default"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }
