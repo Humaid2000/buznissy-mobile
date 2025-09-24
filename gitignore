@@ -1,0 +1,65 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+*/dist/
+build/
+*/build/
+server/public
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# React Native / Expo specific
+.expo/
+.expo-shared/
+web-build/
+
+# Android
+*/android/app/build/
+*/android/build/
+*/android/local.properties
+*.apk
+*.aab
+
+# iOS
+*/ios/Pods/
+*/ios/build/
+
+# EAS
+.easignore
+
+# Vite config temp files
+vite.config.ts.*
+
+# Archive files
+*.tar.gz
+*.zip
+
+# Large asset files (keep only essentials)
+attached_assets/*.zip
+attached_assets/*.pdf
+attached_assets/*.docx
+attached_assets/Screenshot*.png
+attached_assets/image_*.png
+
+# Keep essential assets
+!attached_assets/buznissy-logo*.png
+!attached_assets/Businessi*.png
