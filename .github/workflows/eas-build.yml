@@ -1,0 +1,58 @@
+name: Build React Native App with EAS
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to build'
+        required: true
+        default: 'android'
+        type: choice
+        options:
+          - android
+          - ios
+          - all
+      profile:
+        description: 'Build profile'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+          - preview
+          - production
+
+jobs:
+  build:
+    name: EAS Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EAS_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Android App
+        if: ${{ github.event.inputs.platform == 'android' || github.event.inputs.platform == 'all' }}
+        run: |
+          PROFILE="${{ github.event.inputs.profile || 'preview' }}"
+          eas build --platform=android --profile=$PROFILE --non-interactive --wait
+
+      - name: Build iOS App
+        if: ${{ github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'all' }}
+        run: |
+          PROFILE="${{ github.event.inputs.profile || 'preview' }}"
+          eas build --platform=ios --profile=$PROFILE --non-interactive --wait
