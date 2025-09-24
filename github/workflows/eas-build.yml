@@ -1,0 +1,131 @@
+name: Build React Native App with EAS
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to build'
+        required: true
+        default: 'android'
+        type: choice
+        options:
+          - android
+          - ios
+          - all
+      profile:
+        description: 'Build profile'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+          - preview
+          - production
+  push:
+    branches: [main, master]
+    paths:
+      - 'BuznissyMobile/**'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'BuznissyMobile/**'
+
+jobs:
+  build:
+    name: EAS Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./BuznissyMobile
+    
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: './BuznissyMobile/package-lock.json'
+
+      - name: ☕ Setup Java 17 (for Android builds)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EAS_TOKEN }}
+
+      - name: 📋 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Verify EAS configuration
+        run: |
+          echo "Verifying EAS configuration..."
+          eas config
+          echo "Project info:"
+          eas project:info
+
+      - name: 🤖 Build Android App
+        if: ${{ github.event.inputs.platform == 'android' || github.event.inputs.platform == 'all' || github.event_name == 'push' || github.event_name == 'pull_request' }}
+        run: |
+          echo "🤖 Building Android app..."
+          PROFILE="${{ github.event.inputs.profile || 'preview' }}"
+          echo "Using profile: $PROFILE"
+          eas build --platform=android --profile=$PROFILE --non-interactive --wait
+          echo "✅ Android build completed"
+
+      - name: 🍏 Build iOS App
+        if: ${{ github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'all' }}
+        run: |
+          echo "🍏 Building iOS app..."
+          PROFILE="${{ github.event.inputs.profile || 'preview' }}"
+          echo "Using profile: $PROFILE"
+          eas build --platform=ios --profile=$PROFILE --non-interactive --wait
+          echo "✅ iOS build completed"
+
+      - name: 📱 Get Build Information
+        run: |
+          echo "📱 Getting build information..."
+          echo "Recent builds:"
+          eas build:list --platform=all --limit=5 --json > builds.json
+          cat builds.json
+          
+          echo "Build URLs:"
+          if [ "${{ github.event.inputs.platform }}" == "android" ] || [ "${{ github.event.inputs.platform }}" == "all" ] || [ "${{ github.event_name }}" == "push" ] || [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "🤖 Android APK: Check EAS dashboard for download link"
+          fi
+          
+          if [ "${{ github.event.inputs.platform }}" == "ios" ] || [ "${{ github.event.inputs.platform }}" == "all" ]; then
+            echo "🍏 iOS IPA: Check EAS dashboard for download link"
+          fi
+
+      - name: 📊 Upload Build Artifacts Info
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-info
+          path: ./BuznissyMobile/builds.json
+          retention-days: 30
+
+      - name: 💬 Build Summary
+        run: |
+          echo "## 🎉 Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "| Platform | Status | Profile |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ github.event.inputs.platform }}" == "android" ] || [ "${{ github.event.inputs.platform }}" == "all" ] || [ "${{ github.event_name }}" == "push" ] || [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "| 🤖 Android | ✅ Success | ${{ github.event.inputs.profile || 'preview' }} |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ github.event.inputs.platform }}" == "ios" ] || [ "${{ github.event.inputs.platform }}" == "all" ]; then
+            echo "| 🍏 iOS | ✅ Success | ${{ github.event.inputs.profile || 'preview' }} |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📱 **Download your app from the [EAS Dashboard](https://expo.dev/accounts/buznissy/projects/buznissy/builds)**" >> $GITHUB_STEP_SUMMARY
