@@ -1,15 +1,54 @@
 {
   "cli": {
-    "version": ">= 12.4.0"
+    "version": ">= 12.4.0",
+    "appVersionSource": "local"
   },
   "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://55fa5918-9584-4341-a1d5-dc26a51aac72-00-3q2cncwrn7nls.sisko.replit.dev"
+      }
+    },
     "preview": {
       "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://55fa5918-9584-4341-a1d5-dc26a51aac72-00-3q2cncwrn7nls.sisko.replit.dev"
+      },
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "credentialsSource": "remote",
+        "autoIncrement": true
       },
       "ios": {
-        "simulator": true
+        "simulator": true,
+        "credentialsSource": "remote"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://55fa5918-9584-4341-a1d5-dc26a51aac72-00-3q2cncwrn7nls.sisko.replit.dev"
+      },
+      "android": {
+        "buildType": "app-bundle",
+        "credentialsSource": "local"
+      },
+      "ios": {
+        "credentialsSource": "local"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "../path/to/api-key.json",
+        "track": "internal"
+      },
+      "ios": {
+        "appleId": "your-apple-id@example.com",
+        "ascAppId": "1234567890",
+        "appleTeamId": "ABCDE12345"
       }
     }
   }
